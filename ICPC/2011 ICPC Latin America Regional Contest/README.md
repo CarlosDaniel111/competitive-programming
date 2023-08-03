@@ -1,4 +1,4 @@
-# 2011 ICPC Latin America Regional Contest
+# **2011 ICPC Latin America Regional Contest**
 
 
 ## Problems
