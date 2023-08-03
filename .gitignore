@@ -1,0 +1,6 @@
+*.bin
+*.o
+*.exe
+.idea
+.DS_Store
+**/.cph
