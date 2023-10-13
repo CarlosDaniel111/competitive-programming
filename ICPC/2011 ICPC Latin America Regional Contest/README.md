@@ -1,6 +1,5 @@
 # **2011 ICPC Latin America Regional Contest**
 
-
 ## Problems
 
 [Original Problems](http://matcomgrader.com/media/contests/6221/latam2011.pdf)
