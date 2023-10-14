@@ -9,7 +9,7 @@
 - **C**: Cyclists versus Clouds (Geometria o BFS) 
 - **D**: Daily Turnovers (Estructura de datos/Treap) 
 - **E**: Expedition Plans (Binary Search/Segment Tree)
-- **F**: Fields Division (DSU) ⭐
+- **F**: Fields Division (DFS/BFS) ⭐
 - **G**: Generator Tree (Tree isomorphism)
 - **H**: Hamilton - The Musical (Hungaro) ⭐
 - **I**: Invested Money (Ad-hoc/Fechas) ⭐ 
