@@ -1,0 +1,48 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+using ll = long long;
+using pi = pair<int, int>;
+using vi = vector<int>;
+
+#define fi first
+#define se second
+#define pb push_back
+#define SZ(x) int((x).size())
+#define ALL(x) begin(x), end(x)
+#define FOR(i, a, b) for (int i = (a); i < (b); ++i)
+#define ROF(i, a, b) for (int i = (a)-1; i >= (b); --i)
+#define ENDL '\n'
+
+constexpr int MOD = 1e9 + 7;
+constexpr int MAXN = 1e5 + 5;
+constexpr int INF = 1e9;
+constexpr ll LLINF = 1e18;
+
+int main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(nullptr);
+
+  int n, m;
+  cin >> n >> m;
+  vi a(n);
+  vi b(m);
+  for (auto &x : a) cin >> x;
+  for (auto &x : b) cin >> x;
+
+  vi c;
+  int i = 0, j = 0;
+  while (i < SZ(a) || j < SZ(b)) {
+    if (j == SZ(b) || (i < SZ(a) && a[i] < b[j])) {
+      c.pb(a[i++]);
+    } else {
+      c.pb(b[j++]);
+    }
+  }
+
+  for (auto x : c) {
+    cout << x << " ";
+  }
+
+  return 0;
+}
