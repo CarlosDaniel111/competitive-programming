@@ -28,20 +28,26 @@ void add(int idx, int end) {
     return;
   }
   auto it = nums.lower_bound(a[idx]);
+  int sig = -1, ant = -1;
   if (it != nums.end()) {
-    int sig = *it;
+    sig = *it;
     res.insert(abs(sig - a[idx]));
   }
   if (it != nums.begin()) {
-    int ant = *(--it);
+    ant = *(--it);
     res.insert(abs(ant - a[idx]));
   }
+  if (ant != -1 && sig != -1) {
+    res.erase(res.find(abs(sig - ant)));
+  }
+  nums.insert(a[idx]);
 }
 void del(int idx, int end) {
   cnt[a[idx]]--;
   if (cnt[a[idx]] == 1) iguales--;
   if (cnt[a[idx]] == 0) {
     int sig = -1, ant = -1;
+    nums.erase(a[idx]);
     auto it = nums.lower_bound(a[idx]);
     if (it != nums.end()) {
       sig = *it;
@@ -60,12 +66,12 @@ void del(int idx, int end) {
 int calc() {
   if (iguales)
     return 0;
-  else
-    return *res.begin();
+
+  return *res.begin();
 }
 
 vi mosAlgo(vector<pi> Q) {
-  int L = 0, R = 0, blk = 350;  // IMPORTANT!! blk ~= N/sqrt(Q)
+  int L = 0, R = 0, blk = 50;  // IMPORTANT!! blk ~= N/sqrt(Q)
   vi s(SZ(Q)), res = s;
 #define K(x) pi(x.first / blk, x.second ^ -(x.first / blk & 1))
   iota(ALL(s), 0);
