@@ -18,24 +18,30 @@ signed main() {
   ios_base::sync_with_stdio(0);
   cin.tie(nullptr);
 
-  int n;
-  cin >> n;
-  vi a(n);
-  FOR(i, 0, n) { cin >> a[i]; }
-  vector<vi> dp(n + 5, vi(n + 5, 3e8));
-  FOR(i, 1, n + 1) {
-    for (int j = 1; j + i <= n; j++) {
-      dp[j][i + j] = min(
-          {dp[j][i + j - 1], dp[j + 1][i + j], abs(a[j - 1] - a[i + j - 1])});
+  int n, m;
+  cin >> n >> m;
+  vector<vi> g(n, vi());
+  vector<vi> mat(n, vi(n, 0));
+  FOR(i, 0, m) {
+    int u, v;
+    cin >> u >> v;
+    u--, v--;
+    g[u].pb(v);
+    mat[u][v] = 1;
+  }
+
+  ll ans = 0;
+  FOR(a, 0, n) {
+    FOR(c, 0, n) {
+      if (a == c) continue;
+      int r = 0;
+      for (auto b : g[a]) {
+        r += (mat[b][c]);
+      }
+      ans += r * (r - 1) / 2;
     }
   }
-  int q;
-  cin >> q;
-  while (q--) {
-    int l, r;
-    cin >> l >> r;
-    cout << dp[l][r] << ENDL;
-  }
+  cout << ans << ENDL;
 
   return 0;
 }

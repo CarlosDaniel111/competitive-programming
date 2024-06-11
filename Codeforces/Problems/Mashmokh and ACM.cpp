@@ -14,28 +14,31 @@ using vi = vector<int>;
 #define ROF(i, a, b) for (int i = (int)a - 1; i >= (int)b; --i)
 #define ENDL '\n'
 
+constexpr ll MOD = 1e9 + 7;
+
 signed main() {
   ios_base::sync_with_stdio(0);
   cin.tie(nullptr);
 
-  int n;
-  cin >> n;
-  vi a(n);
-  FOR(i, 0, n) { cin >> a[i]; }
-  vector<vi> dp(n + 5, vi(n + 5, 3e8));
-  FOR(i, 1, n + 1) {
-    for (int j = 1; j + i <= n; j++) {
-      dp[j][i + j] = min(
-          {dp[j][i + j - 1], dp[j + 1][i + j], abs(a[j - 1] - a[i + j - 1])});
+  int n, K;
+  cin >> n >> K;
+  vector<vi> dp(n + 5, vi(K + 5, 0));
+  FOR(i, 1, n + 1) { dp[i][0] = 1; }
+  FOR(i, 1, K) {
+    FOR(j, 1, n + 1) {
+      for (int k = j; k <= n; k += j) {
+        dp[j][i] += dp[k][i - 1];
+        dp[j][i] %= MOD;
+      }
     }
   }
-  int q;
-  cin >> q;
-  while (q--) {
-    int l, r;
-    cin >> l >> r;
-    cout << dp[l][r] << ENDL;
+
+  ll ans = 0;
+  FOR(i, 1, n + 1) {
+    ans += dp[i][K - 1];
+    ans %= MOD;
   }
+  cout << ans << ENDL;
 
   return 0;
 }
