@@ -1,0 +1,44 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+using ll = long long;
+using pi = pair<int, int>;
+using vi = vector<int>;
+
+#define pb push_back
+#define SZ(x) ((int)(x).size())
+#define ALL(x) begin(x), end(x)
+#define FOR(i, a, b) for (int i = (int)a; i < (int)b; ++i)
+#define ROF(i, a, b) for (int i = (int)a - 1; i >= (int)b; --i)
+#define ENDL '\n'
+
+void solve() {
+  int n, m;
+  cin >> n >> m;
+  vector<vi> mat(n, vi(m));
+  FOR(i, 0, n) {
+    FOR(j, 0, m)
+    cin >> mat[i][j];
+  }
+  if (n * m == 1) {
+    cout << -1 << ENDL;
+    return;
+  }
+  FOR(i, 0, n) {
+    FOR(j, 0, m) {
+      cout << mat[i][j] % (n * m) + 1 << " \n"[j == m - 1];
+    }
+  }
+}
+
+signed main() {
+  ios_base::sync_with_stdio(0);
+  cin.tie(nullptr);
+
+  int t = 1;
+  cin >> t;
+  while (t--)
+    solve();
+
+  return 0;
+}
