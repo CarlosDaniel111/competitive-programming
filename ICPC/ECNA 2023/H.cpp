@@ -12,19 +12,38 @@ using vi = vector<int>;
 #define ROF(i, a, b) for (int i = (int)a - 1; i >= (int)b; --i)
 #define ENDL '\n'
 
+vi PI(const string& s) {
+  vi p(SZ(s));
+  FOR(i, 1, SZ(s)) {
+    int g = p[i - 1];
+    while (g && s[i] != s[g]) g = p[g - 1];
+    p[i] = g + (s[i] == s[g]);
+  }
+  return p;
+}
+
+int KMP(const string& s, const string& pat) {
+  vi phi = PI(pat);
+  int matches = 0;
+  for (int i = 0, j = 0; i < SZ(s); ++i) {
+    while (j > 0 && s[i] != pat[j]) j = phi[j - 1];
+    if (s[i] == pat[j]) ++j;
+    if (j == SZ(pat)) {
+      matches++;
+      j = phi[j - 1];
+    }
+  }
+  return matches;
+}
+
 void solve() {
   string a, s, t;
   cin >> a >> s >> t;
   if (SZ(s) < SZ(t)) swap(s, t);
 
   auto check = [&](string A) -> bool {
-    int N = SZ(A);
-    A = A + A;
-    int vS = 0, vT = 0;
-    FOR(i, 0, N) {
-      if (A.substr(i, SZ(s)) == s) vS++;
-      if (A.substr(i, SZ(t)) == t) vT++;
-    }
+    A = A + A.substr(0, SZ(s) - 1);
+    int vS = KMP(A, s), vT = KMP(A, t);
     return (vS <= vT);
   };
   queue<string> q;
@@ -48,8 +67,7 @@ signed main() {
 
   int t = 1;
   cin >> t;
-  while (t--)
-    solve();
+  while (t--) solve();
 
   return 0;
 }
