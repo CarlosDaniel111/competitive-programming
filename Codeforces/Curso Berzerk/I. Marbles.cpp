@@ -45,9 +45,7 @@ signed main() {
       if (i == x) continue;
       vis[self(self, x, i)] = 1;
     }
-    FOR(i, 1, min(x, y)) {
-      vis[self(self, x - i, y - i)] = 1;
-    }
+    FOR(i, 1, min(x, y)) { vis[self(self, x - i, y - i)] = 1; }
 
     FOR(i, 0, 1001) {
       if (!vis[i]) {

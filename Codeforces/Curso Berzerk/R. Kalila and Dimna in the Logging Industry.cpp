@@ -1,12 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
-// Pura Gente del Coach Moy
+
 using ll = long long;
+using ld = long double;
 using pi = pair<ll, ll>;
 using vi = vector<ll>;
 
-#define fi first
-#define se second
 #define pb push_back
 #define SZ(x) ((ll)(x).size())
 #define ALL(x) begin(x), end(x)
@@ -21,7 +20,7 @@ struct Line {
 };
 
 struct LineContainer : multiset<Line, less<>> {
-  // (para doubles, usar inf = 1/.0, div(a,b) = a/b)
+  // (for doubles, use inf = 1/.0, div(a,b) = a/b)
   static const ll inf = LLONG_MAX;
   ll div(ll a, ll b) {  // floored division
     return a / b - ((a ^ b) < 0 && a % b);
@@ -48,31 +47,27 @@ struct LineContainer : multiset<Line, less<>> {
 };
 
 signed main() {
-  cin.tie(0)->sync_with_stdio(0);
+  ios_base::sync_with_stdio(0);
+  cin.tie(nullptr);
 
   ll n;
   cin >> n;
-  vi a(n + 1);
-  ll total = 0;
-  FOR(i, 1, n + 1) {
+  vector<ll> a(n), b(n);
+  FOR(i, 0, n) {
     cin >> a[i];
-    total += a[i] * i;
+    a[i] *= -1;
   }
-  vi sum(n + 1, 0);
-  FOR(i, 1, n + 1) { sum[i] = sum[i - 1] + a[i]; }
+  FOR(i, 0, n) { cin >> b[i]; }
 
-  LineContainer left, right;
-  ll ans = total;
-  ROF(i, n + 1, 1) {
-    left.add(i, -sum[i]);
-    ans = max(ans, total + (sum[i] - a[i] * i + left.query(a[i])));
-  }
-  FOR(i, 1, n + 1) {
-    right.add(i, -sum[i - 1]);
-    ans = max(ans, total + (sum[i - 1] - a[i] * i + right.query(a[i])));
-  }
+  LineContainer cht;
 
-  cout << ans << ENDL;
+  vector<ll> dp(n + 5, 0);
+  cht.add(b[0], dp[0]);
+  FOR(i, 1, n) {
+    dp[i] = cht.query(a[i]);
+    cht.add(b[i], dp[i]);
+  }
+  cout << -1LL * dp[n - 1] << ENDL;
 
   return 0;
 }

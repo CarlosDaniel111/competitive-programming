@@ -1,12 +1,10 @@
 #include <bits/stdc++.h>
 using namespace std;
-// Pura Gente del Coach Moy
+
 using ll = long long;
 using pi = pair<int, int>;
 using vi = vector<int>;
 
-#define fi first
-#define se second
 #define pb push_back
 #define SZ(x) ((int)(x).size())
 #define ALL(x) begin(x), end(x)
@@ -18,23 +16,22 @@ signed main() {
   ios_base::sync_with_stdio(0);
   cin.tie(nullptr);
 
-  int n, m, h;
-  cin >> n >> m >> h;
-  vi a(m);
-  int suma = 0;
-  FOR(i, 0, m) {
-    cin >> a[i];
-    suma += a[i];
+  int n;
+  cin >> n;
+  map<int, int> m;
+  FOR(i, 0, n) {
+    int x;
+    cin >> x;
+    m[x]++;
   }
-  if (suma < n) {
-    cout << "-1" << ENDL;
-    return 0;
+
+  for (auto x : m) {
+    if (x.second % 2 == 1) {
+      cout << "Conan" << ENDL;
+      return 0;
+    }
   }
-  h--;
-  double ans = 1;
-  FOR(i, 0, a[h] - 1) { ans *= (suma - n - i) * 1.0 / (suma - i - 1) * 1.0; }
-  cout << setprecision(9) << fixed;
-  cout << 1.0 - ans << ENDL;
+  cout << "Agasa" << ENDL;
 
   return 0;
 }

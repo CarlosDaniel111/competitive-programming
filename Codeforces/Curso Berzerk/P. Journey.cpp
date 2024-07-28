@@ -28,8 +28,7 @@ void dfs(int u, int p) {
     suma += ans[v];
     cnt++;
   }
-  if (cnt)
-    ans[u] = suma / cnt * 1.0 + 1;
+  if (cnt) ans[u] = suma / cnt * 1.0 + 1;
 }
 
 signed main() {

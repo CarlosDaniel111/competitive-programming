@@ -14,6 +14,8 @@ using vi = vector<ll>;
 #define ROF(i, a, b) for (ll i = (ll)a - 1; i >= (ll)b; --i)
 #define ENDL '\n'
 
+constexpr ll INF = 3e15;
+
 struct DSU {
   vector<ll> e;
   void init(ll n) { e = vi(n, -1); }
@@ -21,17 +23,15 @@ struct DSU {
   ll get(ll x) { return e[x] < 0 ? x : e[x] = get(e[x]); }
   bool join(ll a, ll b) {
     a = get(a), b = get(b);
-    if (a == b)
-      return false;
-    if (e[a] > e[b])
-      swap(a, b);
+    if (a == b) return false;
+    if (e[a] > e[b]) swap(a, b);
     e[a] += e[b];
     e[b] = a;
     return true;
   }
 };
 
-const ll MAX = 1e6 + 5, LOG_MAX = 30;
+const ll MAX = 3e5 + 5, LOG_MAX = 30;
 vector<vector<pi>> g;
 ll jump[MAX][LOG_MAX];
 ll mx[MAX][LOG_MAX];
@@ -50,6 +50,7 @@ void dfs(ll u, ll p = -1, ll d = 0) {
 void build(ll n) {
   memset(jump, -1, sizeof jump);
 
+  mx[0][0] = -INF;
   dfs(0);
 
   for (ll i = 1; i < LOG_MAX; i++)
@@ -61,17 +62,14 @@ void build(ll n) {
 }
 
 ll getMax(ll p, ll q) {
-  if (depth[p] < depth[q])
-    swap(p, q);
+  if (depth[p] < depth[q]) swap(p, q);
 
   ll ans = 0;
   ll dist = depth[p] - depth[q];
   for (ll i = LOG_MAX - 1; i >= 0; i--)
-    if ((dist >> i) & 1)
-      p = jump[p][i], ans = max(ans, mx[p][i]);
+    if ((dist >> i) & 1) ans = max(ans, mx[p][i]), p = jump[p][i];
 
-  if (p == q)
-    return ans;
+  if (p == q) return ans;
 
   for (ll i = LOG_MAX - 1; i >= 0; i--)
     if (jump[p][i] != jump[q][i]) {
@@ -81,7 +79,7 @@ ll getMax(ll p, ll q) {
       q = jump[q][i];
     }
 
-  return ans;
+  return max({ans, mx[p][0], mx[q][0]});
 }
 
 struct Edge {
@@ -89,8 +87,6 @@ struct Edge {
 
   bool operator<(Edge e) const { return c < e.c; }
 };
-
-constexpr ll INF = 3e15;
 
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
@@ -155,9 +151,7 @@ signed main() {
   FOR(i, 0, m) {
     if (ans[i] >= INF) ans[i] = -1;
   }
-  FOR(i, 0, m) {
-    cout << ans[i] << " \n"[i == n - 1];
-  }
+  FOR(i, 0, m) { cout << ans[i] << " \n"[i == m - 1]; }
 
   return 0;
 }

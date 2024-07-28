@@ -2,16 +2,16 @@
 using namespace std;
 // Pura Gente del Coach Moy
 using ll = long long;
-using pi = pair<ll, ll>;
-using vi = vector<ll>;
+using pi = pair<int, int>;
+using vi = vector<int>;
 
 #define fi first
 #define se second
 #define pb push_back
-#define SZ(x) ((ll)(x).size())
+#define SZ(x) ((int)(x).size())
 #define ALL(x) begin(x), end(x)
-#define FOR(i, a, b) for (ll i = (ll)a; i < (ll)b; ++i)
-#define ROF(i, a, b) for (ll i = (ll)a - 1; i >= (ll)b; --i)
+#define FOR(i, a, b) for (int i = (int)a; i < (int)b; ++i)
+#define ROF(i, a, b) for (int i = (int)a - 1; i >= (int)b; --i)
 #define ENDL '\n'
 
 struct Line {
@@ -48,31 +48,36 @@ struct LineContainer : multiset<Line, less<>> {
 };
 
 signed main() {
-  cin.tie(0)->sync_with_stdio(0);
+  ios_base::sync_with_stdio(0);
+  cin.tie(nullptr);
 
   ll n;
   cin >> n;
-  vi a(n + 1);
-  ll total = 0;
-  FOR(i, 1, n + 1) {
-    cin >> a[i];
-    total += a[i] * i;
-  }
-  vi sum(n + 1, 0);
-  FOR(i, 1, n + 1) { sum[i] = sum[i - 1] + a[i]; }
-
-  LineContainer left, right;
-  ll ans = total;
-  ROF(i, n + 1, 1) {
-    left.add(i, -sum[i]);
-    ans = max(ans, total + (sum[i] - a[i] * i + left.query(a[i])));
-  }
-  FOR(i, 1, n + 1) {
-    right.add(i, -sum[i - 1]);
-    ans = max(ans, total + (sum[i - 1] - a[i] * i + right.query(a[i])));
+  vector<tuple<ll, ll, ll>> rect(n);
+  ll last = 0;
+  FOR(i, 0, n) {
+    ll x, y, a;
+    cin >> x >> y >> a;
+    rect[i] = {x, y, a};
+    last = max(last, x);
   }
 
-  cout << ans << ENDL;
+  FOR(i, 0, n) {
+    auto& [xi, yi, ai] = rect[i];
+    xi = last - xi;
+  }
+
+  sort(ALL(rect));
+
+  LineContainer cht;
+  cht.add(0, 0);
+  ll val = 0;
+  FOR(i, 0, n) {
+    auto [xi, yi, ai] = rect[i];
+    val = cht.query(xi);
+    cht.add(yi, val - xi * yi - ai);
+  }
+  cout << cht.query(last) << ENDL;
 
   return 0;
 }

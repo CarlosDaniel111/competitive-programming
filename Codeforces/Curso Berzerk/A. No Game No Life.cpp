@@ -48,7 +48,8 @@ ll gaussMod(vector<vi> &a, vi &ans) {
     FOR(i, 0, n) {
       if (i != row) {
         ll c = 1LL * a[i][col] * modInverse(a[row][col]) % MOD;
-        for (ll j = col; j <= m; ++j) a[i][j] = (MOD + a[i][j] - (1LL * a[row][j] * c) % MOD) % MOD;
+        for (ll j = col; j <= m; ++j)
+          a[i][j] = (MOD + a[i][j] - (1LL * a[row][j] * c) % MOD) % MOD;
       }
     }
     ++row;
@@ -56,7 +57,8 @@ ll gaussMod(vector<vi> &a, vi &ans) {
 
   ans.assign(m, 0);
   FOR(i, 0, m) {
-    if (where[i] != -1) ans[i] = 1LL * a[where[i]][m] * modInverse(a[where[i]][i]) % MOD;
+    if (where[i] != -1)
+      ans[i] = 1LL * a[where[i]][m] * modInverse(a[where[i]][i]) % MOD;
   }
   FOR(i, 0, n) {
     ll sum = 0;
@@ -110,9 +112,7 @@ signed main() {
   vector<vi> sistema(512, vi(513, 0));
   ll den = modInverse(n + 1);
   FOR(i, 0, 512) {
-    FOR(j, 0, 512) {
-      sistema[i][j] = (cnt[i xor j] * den) % MOD;
-    }
+    FOR(j, 0, 512) { sistema[i][j] = (cnt[i xor j] * den) % MOD; }
     sistema[i][i] = (sistema[i][i] - 1 + MOD) % MOD;
     if (i) {
       sistema[i][512] = MOD - den;

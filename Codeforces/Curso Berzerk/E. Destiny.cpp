@@ -38,7 +38,8 @@ signed main() {
     FOR(_, 0, 70) {
       int x = l + rng() % len;
       if (SZ(pos[a[x]]) < t) continue;
-      int veces = upper_bound(ALL(pos[a[x]]), r) - lower_bound(ALL(pos[a[x]]), l);
+      int veces =
+          upper_bound(ALL(pos[a[x]]), r) - lower_bound(ALL(pos[a[x]]), l);
       if (veces > t) {
         ans = min(ans, a[x]);
       }
