@@ -12,46 +12,45 @@ using vi = vector<ll>;
 #define ROF(i, a, b) for (ll i = (ll)a - 1; i >= (ll)b; --i)
 #define ENDL '\n'
 
-int n;
-
-int ternary(int k, int i) {
-  if (i == n) return 0;
-  int l = 0, r = k;
-  while (r - l >= 2) {
-    int m1 = l + (r - l) / 3;
-    int m2 = r - (r - l) / 3;
-    int f1 = calc(m1, i) + ternary(k - m1, );
-    double f2 = f(m2);
-    if (f1 < f2)  // Maximo de f(x)
-      l = m1;
-    else
-      r = m2;
-  }
-  return f(l);
-}
-
 void solve() {
-  ll x, y, k;
-  cin >> x >> y >> k;
-  ll k2 = k;
-  ll ans = 0;
-  for (ll i = x; i >= 0 && k2; i -= y, k2--) {
-    ans += i;
-  }
-  cout << ENDL;
-  /*ll ans2 = 0;
-  if ((x + y - 1) / y <= k) {
-    ll n = (x + y - 1) / y;
-    ans2 = (n / 2.0) * (x + (x - (x / y) * y));
-  } else {
-    ans2 = k / 2.0 * (x + (x - (k - 1) * y));
-  }*/
+  ll n, k;
+  cin >> n >> k;
+  vi a(n), b(n);
+  FOR(i, 0, n) { cin >> a[i]; }
+  FOR(i, 0, n) { cin >> b[i]; }
 
-  ll n = min(k, x / y + 1);
-  ll l = x - (n - 1) * y;
-  ll ans2 = n / 2.0 * (x + l);
+  auto can = [&](ll x) -> bool {
+    ll cnt = 0;
+    FOR(i, 0, n) {
+      if (a[i] >= x) {
+        cnt += (a[i] - x) / b[i] + 1;
+      }
+    }
+    return cnt >= k;
+  };
+
+  ll l = 0, r = 1e9 + 5;
+  while (r - l > 1) {
+    ll mid = (l + r) / 2;
+    if (can(mid)) {
+      l = mid;
+    } else {
+      r = mid;
+    }
+  }
+
+  ll ans = 0;
+  ll cnt = 0;
+  FOR(i, 0, n) {
+    if (a[i] >= l) {
+      ll curr = (a[i] - l) / b[i] + 1;
+
+      ans += curr * a[i] - curr * (curr - 1) / 2 * b[i];
+      cnt += curr;
+    }
+  }
+  ans -= l * (cnt - k);
   cout << ans << ENDL;
-  cout << ans2 << ENDL;
 }
 
 signed main() {

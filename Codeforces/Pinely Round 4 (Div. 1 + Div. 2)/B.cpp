@@ -12,28 +12,36 @@ using vi = vector<int>;
 #define ROF(i, a, b) for (int i = (int)a - 1; i >= (int)b; --i)
 #define ENDL '\n'
 
-constexpr ll MOD = 1e9 + 7;
-
 void solve() {
-  string s;
-  cin >> s;
-  ll n = SZ(s);
-  map<int, int> mapa;
-  mapa[0] = 1;
-  int cnt = 0;
-  ll ans = 0;
-  FOR(i, 0, n) {
-    if (s[i] == '0')
-      cnt++;
-    else
-      cnt--;
+  int n;
+  cin >> n;
+  vi b(n - 1);
+  FOR(i, 0, n - 1) cin >> b[i];
+  vi a(n, 0);
+  a[0] = b[0];
 
-    if (mapa[cnt] != 0) {
-      (ans += mapa[cnt] * (n - i)) %= MOD;
+  a[n - 1] = b[n - 2];
+
+  FOR(i, 1, n - 1) {
+    FOR(k, 0, 31) {
+      if (((b[i] >> k) & 1) || ((b[i - 1] >> k) & 1)) {
+        a[i] |= (1 << k);
+      }
     }
-    (mapa[cnt] += (i + 2)) %= MOD;
   }
-  cout << ans << ENDL;
+
+  FOR(i, 0, n - 1) {
+    // cout << (a[i] & a[i + 1]) << ENDL;
+    if ((a[i] & a[i + 1]) != b[i]) {
+      cout << -1 << ENDL;
+      return;
+    }
+  }
+
+  for (auto x : a) {
+    cout << x << " ";
+  }
+  cout << ENDL;
 }
 
 signed main() {
