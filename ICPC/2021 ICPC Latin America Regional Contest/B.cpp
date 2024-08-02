@@ -39,9 +39,11 @@ void fft(vector<C> &a) {
   if (i < rev[i]) swap(a[i], a[rev[i]]);
   for (int k = 1; k < n; k *= 2)
     for (int i = 0; i < n; i += 2 * k) FOR(j, 0, k) {
-        // C z = rt[j+k] * a[i+j+k]; // (25% faster if hand-rolled)  /// include-line
-        auto x = (ld *)&rt[j + k], y = (ld *)&a[i + j + k];         /// exclude-line
-        C z(x[0] * y[0] - x[1] * y[1], x[0] * y[1] + x[1] * y[0]);  /// exclude-line
+        // C z = rt[j+k] * a[i+j+k]; // (25% faster if hand-rolled)  ///
+        // include-line
+        auto x = (ld *)&rt[j + k], y = (ld *)&a[i + j + k];  /// exclude-line
+        C z(x[0] * y[0] - x[1] * y[1],
+            x[0] * y[1] + x[1] * y[0]);  /// exclude-line
         a[i + j + k] = a[i + j] - z;
         a[i + j] += z;
       }
@@ -66,7 +68,6 @@ vl conv(const vl &a, const vl &b) {
   res[i] = floor(imag(out[i]) / (4 * n) + 0.5);
   return res;
 }
-
 bool cmp(int a, int b) { return abs(a) < abs(b); }
 
 vl solve(vl &a, vl &b) {
@@ -92,7 +93,8 @@ vl solve(vl &a, vl &b) {
   sort(ALL(negb), cmp);
 
   int i = SZ(posa) - 1, j = SZ(posb) - 1;
-  for (; i >= 0 && j >= 0; i--, j--) ans.pb(posa[i] * posb[i]);
+  // cout << posa[i] << " " << posb[j];
+  for (; i >= 0 && j >= 0; i--, j--) ans.pb(posa[i] * posb[j]);
   vl rem;
   for (; i >= 0 || j >= 0; i--, j--) {
     if (i >= 0)
@@ -102,7 +104,7 @@ vl solve(vl &a, vl &b) {
   }
 
   i = SZ(nega) - 1, j = SZ(negb) - 1;
-  for (; i >= 0 && j >= 0; i--, j--) ans.pb(nega[i] * negb[i]);
+  for (; i >= 0 && j >= 0; i--, j--) ans.pb(nega[i] * negb[j]);
   vl rem2;
   for (; i >= 0 || j >= 0; i--, j--) {
     if (i >= 0)
@@ -117,8 +119,10 @@ vl solve(vl &a, vl &b) {
 
   sort(ALL(rem), cmp);
   sort(ALL(rem2), cmp);
+
   vl res = conv(rem, rem2);
   ll last = (SZ(ans) ? ans.back() : 0);
+
   FOR(i, 0, SZ(rem) - 1)
   ans.pb(last + res[i]);
 
@@ -144,9 +148,7 @@ signed main() {
   FOR(i, 0, n)
   b[i] *= -1;
   vl mn = solve(a, b);
-  FOR(i, 0, n) {
-    cout << -mn[i] << " " << mx[i] << ENDL;
-  }
+  FOR(i, 0, n) { cout << -mn[i] << " " << mx[i] << ENDL; }
 
   return 0;
 }
