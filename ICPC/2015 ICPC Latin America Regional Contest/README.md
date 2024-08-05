@@ -9,7 +9,7 @@
 - **C**: Cake cut (Ternary Search) ⭐
 - **D**: D as in Daedalus (Ad-hoc) ⭐
 - **E**: Exposing corruption (DP) ⭐
-- **F**: Fence the vegetables fail (Sweep Line)
+- **F**: Fence the vegetables fail (Sweep Line) ⭐
 - **G**: Galactic taxes (Ternary Search) ⭐
 - **H**: Height map (Ad-hoc) ⭐
 - **I**: Identifying tea (Ad-hoc) ⭐
