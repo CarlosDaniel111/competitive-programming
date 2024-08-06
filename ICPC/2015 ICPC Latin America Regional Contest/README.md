@@ -13,5 +13,5 @@
 - **G**: Galactic taxes (Ternary Search) ⭐
 - **H**: Height map (Ad-hoc) ⭐
 - **I**: Identifying tea (Ad-hoc) ⭐
-- **J**: Just a bit sorted (Math/Combinatoria)
-- **K**: Keep it energized (Segment Tree)
+- **J**: Just a bit sorted (Math/Combinatoria) ⭐
+- **K**: Keep it energized (Segment Tree) ⭐
