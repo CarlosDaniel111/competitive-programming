@@ -5,15 +5,15 @@
 [Original Problems](http://matcomgrader.com/media/contests/6227/latam2017.pdf)
 
 - **A**: Arranging tiles (Geometria)
-- **B**: Buggy ICPC (String)
+- **B**: Buggy ICPC (String) ⭐
 - **C**: Complete Naebbirac’s sequence (Greedy) ⭐
-- **D**: Daunting device (Simular)
+- **D**: Daunting device (Simular) ⭐
 - **E**: Enigma (DP de digitos) ⭐
 - **F**: Fundraising (Binary Indexed Tree) ⭐
-- **G**: Gates of uncertainty (DP)
+- **G**: Gates of uncertainty (DP) ⭐
 - **H**: Hard choice (Ad-hoc) ⭐
-- **I**: Imperial roads (LCA/MST) 
-- **J**: Jumping Frog (Math)
-- **K**: Keep it covered (Bipartite Matching)
+- **I**: Imperial roads (LCA/MST) ⭐
+- **J**: Jumping Frog (Math) ⭐
+- **K**: Keep it covered (MaxFlow) ⭐
 - **L**: Linearville (*)
 - **M**: Marblecoin (Suffix Array) ⭐
