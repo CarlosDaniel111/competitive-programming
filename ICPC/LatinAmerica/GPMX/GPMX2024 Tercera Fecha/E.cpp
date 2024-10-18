@@ -18,14 +18,14 @@ signed main() {
   int n;
   cin >> n;
   vector<vi> a(n, vi(n));
-  FOR (i, 0, n) FOR (j, 0, n) cin >> a[i][j];
+  FOR(i, 0, n) FOR(j, 0, n) cin >> a[i][j];
 
-  FOR (k, 0, 4) {
+  FOR(k, 0, 4) {
     bool ok = 1;
-    FOR (i, 0, n) {
-      FOR (j, 0, n) {
-        ok &= i == 0 || a[i-1][j] < a[i][j];
-        ok &= j == 0 || a[i][j-1] < a[i][j];
+    FOR(i, 0, n) {
+      FOR(j, 0, n) {
+        ok &= i == 0 || a[i - 1][j] < a[i][j];
+        ok &= j == 0 || a[i][j - 1] < a[i][j];
       }
     }
     if (ok) {
@@ -33,10 +33,8 @@ signed main() {
       return 0;
     }
     vector<vi> b(n, vi(n));
-    FOR (i, 0, n) {
-      FOR (j, 0, n) {
-        b[n - j - 1][i] = a[i][j];
-      }
+    FOR(i, 0, n) {
+      FOR(j, 0, n) { b[n - j - 1][i] = a[i][j]; }
     }
     a.swap(b);
   }
