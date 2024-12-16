@@ -33,10 +33,41 @@ signed main() {
 
   ifstream file(
       "/Users/CarlosBeltran/Documents/ICPC/competitive-programming/"
-      "AdventofCode/DiaX/input.txt");
+      "AdventofCode/Dia9/input.txt");
 
   string line;
   while (getline(file, line)) {
+    vector<int> ids;
+    int currID = 0;
+    set<int> disp;
+    FOR(i, 0, SZ(line)) {
+      FOR(_, 0, line[i] - '0') {
+        if (i & 1) {
+          ids.pb(-1);
+          disp.insert(SZ(ids) - 1);
+        } else {
+          ids.pb(currID);
+        }
+      }
+      if (i % 2 == 0) currID++;
+    }
+
+    while (SZ(disp)) {
+      bool entro = false;
+      while (ids.back() == -1) {
+        entro = true;
+        disp.erase(SZ(ids) - 1);
+        ids.pop_back();
+      }
+      if (entro) continue;
+      auto it = disp.begin();
+      ids[*it] = ids.back();
+      disp.erase(it);
+      ids.pop_back();
+    }
+    ll ans = 0;
+    FOR(i, 0, SZ(ids)) { ans += i * ids[i]; }
+    cout << ans << ENDL;
   }
 
   return 0;

@@ -33,11 +33,43 @@ signed main() {
 
   ifstream file(
       "/Users/CarlosBeltran/Documents/ICPC/competitive-programming/"
-      "AdventofCode/DiaX/input.txt");
+      "AdventofCode/Dia8/input.txt");
 
   string line;
+  vector<string> grid;
   while (getline(file, line)) {
+    grid.pb(line);
   }
+  map<char, vector<pi>> mp;
+  set<pi> ans;
+  int n = SZ(grid), m = SZ(grid[0]);
+  FOR(i, 0, n) {
+    FOR(j, 0, m) {
+      if (grid[i][j] != '.') {
+        mp[grid[i][j]].pb({i, j});
+        ans.insert({i, j});
+      }
+    }
+  }
+
+  for (auto &[c, pos] : mp) {
+    FOR(i, 0, SZ(pos)) {
+      FOR(j, 0, SZ(pos)) {
+        if (i == j) continue;
+        int distX = pos[i].first - pos[j].first;
+        int distY = pos[i].second - pos[j].second;
+        pi nw = pos[i];
+        nw = {nw.first + distX, nw.second + distY};
+        while (nw.first >= 0 && nw.first < n && nw.second >= 0 &&
+               nw.second < m) {
+          ans.insert(nw);
+          nw = {nw.first + distX, nw.second + distY};
+        }
+      }
+    }
+  }
+
+  cout << SZ(ans) << ENDL;
 
   return 0;
 }
