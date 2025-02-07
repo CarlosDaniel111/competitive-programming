@@ -33,7 +33,7 @@ signed main() {
 
   ifstream file(
       "/Users/CarlosBeltran/Documents/ICPC/competitive-programming/"
-      "AdventofCode/DiaX/input.txt");
+      "AdventofCode/2024/DiaX/input.txt");
 
   string line;
   while (getline(file, line)) {

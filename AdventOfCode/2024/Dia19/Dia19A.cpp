@@ -27,59 +27,61 @@ vector<string> split(string str, char pattern) {
 
   return results;
 }
-const int n = 71;
-const int dx[4] = {1, -1, 0, 0}, dy[4] = {0, 0, 1, -1};
+
+string s;
+set<string> pat;
+
+int dp[200];
+
+bool solve(int pos) {
+  if (pos == SZ(s)) return true;
+  int &ans = dp[pos];
+  if (ans != -1) return ans;
+  ans = 0;
+  FOR(i, 1, SZ(s) - pos + 1) {
+    if (pat.count(s.substr(pos, i))) {
+      if (solve(pos + i)) {
+        ans = 1;
+        return ans;
+      }
+    }
+  }
+  return ans;
+}
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
 
   ifstream file(
       "/Users/CarlosBeltran/Documents/ICPC/competitive-programming/"
-      "AdventofCode/Dia19/input.txt");
+      "AdventofCode/Dia20/input.txt");
 
   string line;
-  vector<vi> block(n, vi(n, 0));
-  queue<pi> sig;
-  int cnt = 0;
+  bool isPatron = true;
+
+  int ans = 0;
   while (getline(file, line)) {
-    int x = stoi(split(line, ',')[0]);
-    int y = stoi(split(line, ',')[1]);
-    if (cnt < 1024)
-      block[y][x] = 1;
-    else
-      sig.push({x, y});
-    cnt++;
-  }
-
-  while (SZ(sig)) {
-    queue<pi> q;
-    vector<vi> dist(n, vi(n, -1));
-    q.push({0, 0});
-    dist[0][0] = 0;
-    auto [xx, yy] = sig.front();
-    sig.pop();
-    block[yy][xx] = 1;
-    auto isValid = [&](int x, int y) -> bool {
-      return (x >= 0 && x < n && y >= 0 && y < n && !block[x][y] &&
-              dist[x][y] == -1);
-    };
-
-    while (SZ(q)) {
-      auto [x, y] = q.front();
-      q.pop();
-
-      FOR(k, 0, 4) {
-        int sigx = x + dx[k], sigy = y + dy[k];
-        if (isValid(sigx, sigy)) {
-          dist[sigx][sigy] = dist[x][y] + 1;
-          q.push({sigx, sigy});
+    if (SZ(line) == 0) {
+      isPatron = false;
+      continue;
+    }
+    if (isPatron) {
+      vector<string> pats = split(line, ',');
+      FOR(i, 0, SZ(pats)) {
+        if (i == 0) {
+          pat.insert(pats[i]);
+        } else {
+          pat.insert(pats[i].substr(1));
         }
       }
+      continue;
     }
-    if (dist[70][70] == -1) {
-      cout << xx << "," << yy << ENDL;
-      return 0;
+    s = line;
+    memset(dp, -1, sizeof(dp));
+    if (solve(0)) {
+      ans++;
     }
   }
+  cout << ans << ENDL;
 
   return 0;
 }

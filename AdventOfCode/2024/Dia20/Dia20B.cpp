@@ -2,19 +2,19 @@
 using namespace std;
 // Pura Gente del Coach Moy
 using ll = long long;
-using pi = pair<ll, ll>;
-using vi = vector<ll>;
+using pi = pair<int, int>;
+using vi = vector<int>;
 
 #define pb push_back
-#define SZ(x) ((ll)(x).size())
+#define SZ(x) ((int)(x).size())
 #define ALL(x) begin(x), end(x)
-#define FOR(i, a, b) for (ll i = (ll)a; i < (ll)b; ++i)
-#define ROF(i, a, b) for (ll i = (ll)a - 1; i >= (ll)b; --i)
+#define FOR(i, a, b) for (int i = (int)a; i < (int)b; ++i)
+#define ROF(i, a, b) for (int i = (int)a - 1; i >= (int)b; --i)
 #define ENDL '\n'
 
 vector<string> split(string str, char pattern) {
-  ll posInit = 0;
-  ll posFound = 0;
+  int posInit = 0;
+  int posFound = 0;
   string splitted;
   vector<string> results;
 
@@ -27,54 +27,73 @@ vector<string> split(string str, char pattern) {
 
   return results;
 }
+constexpr int dx[4] = {0, 0, 1, -1}, dy[4] = {1, -1, 0, 0};
 
-string s;
-set<string> pat;
-
-ll dp[200];
-
-ll solve(ll pos) {
-  if (pos == SZ(s)) return 1;
-  ll &ans = dp[pos];
-  if (ans != -1) return ans;
-  ans = 0;
-  FOR(i, 1, SZ(s) - pos + 1) {
-    if (pat.count(s.substr(pos, i))) {
-      ans += solve(pos + i);
-    }
-  }
-  return ans;
-}
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
 
   ifstream file(
       "/Users/CarlosBeltran/Documents/ICPC/competitive-programming/"
-      "AdventofCode/Dia20/input.txt");
+      "AdventofCode/Dia21/input.txt");
 
   string line;
-  bool isPatron = true;
+  vector<string> grid;
 
-  ll ans = 0;
   while (getline(file, line)) {
-    if (SZ(line) == 0) {
-      isPatron = false;
-      continue;
+    grid.pb(line);
+  }
+
+  int n = SZ(grid), m = SZ(grid[0]);
+  vector<vi> dist(n, vi(m, -1));
+  pi start, end;
+  FOR(i, 0, n) {
+    FOR(j, 0, m) {
+      if (grid[i][j] == 'S') {
+        start = {i, j};
+      } else if (grid[i][j] == 'E') {
+        end = {i, j};
+      }
     }
-    if (isPatron) {
-      vector<string> pats = split(line, ',');
-      FOR(i, 0, SZ(pats)) {
-        if (i == 0) {
-          pat.insert(pats[i]);
-        } else {
-          pat.insert(pats[i].substr(1));
+  }
+
+  auto isValid = [&](int x, int y) -> bool {
+    return (x >= 0 && x < n && y >= 0 && y < m && grid[x][y] != '#' &&
+            dist[x][y] == -1);
+  };
+
+  queue<pi> q;
+  q.push(start);
+  dist[start.first][start.second] = 0;
+  while (SZ(q)) {
+    auto [x, y] = q.front();
+    q.pop();
+
+    if (tie(x, y) == tie(end.first, end.second)) break;
+
+    FOR(k, 0, 4) {
+      int sigx = x + dx[k], sigy = y + dy[k];
+      if (isValid(sigx, sigy)) {
+        dist[sigx][sigy] = dist[x][y] + 1;
+        q.push({sigx, sigy});
+      }
+    }
+  }
+
+  int ans = 0;
+  FOR(x, 1, n - 1) {
+    FOR(y, 1, m - 1) {
+      if (grid[x][y] == '#') continue;
+      FOR(movx, -21, 21) {
+        FOR(movy, -21, 21) {
+          int x2 = x + movx, y2 = y + movy;
+          if (x2 < 0 or x2 >= n or y2 < 0 or y2 >= m or grid[x2][y2] == '#' or
+              dist[x2][y2] == -1)
+            continue;
+          int d = abs(x2 - x) + abs(y2 - y);
+          if (d <= 20) ans += ((dist[x2][y2] - dist[x][y] - d) >= 100);
         }
       }
-      continue;
     }
-    s = line;
-    memset(dp, -1, sizeof(dp));
-    ans += solve(0);
   }
   cout << ans << ENDL;
 
