@@ -12,27 +12,28 @@ using vi = vector<int>;
 #define ROF(i, a, b) for (int i = (int)a - 1; i >= (int)b; --i)
 #define ENDL '\n'
 
-constexpr int MAX = 2e6 + 5;
-
 signed main() {
   cin.tie(0)->sync_with_stdio(0);
 
-  int n;
-  cin >> n;
-  vi a(n), sig(MAX * 2, 0);
+  int n, m;
+  cin >> n >> m;
+  vector<vi> a(n, vi(m, 0));
   FOR(i, 0, n) {
-    cin >> a[i];
-    sig[a[i]] = a[i];
+    string s;
+    cin >> s;
+    FOR(j, 0, m) {
+      a[i][j] = (s[j] == '1');
+      if (j != 0 && s[j] == '1' && s[j - 1] == '1') a[i][j] += a[i][j - 1];
+    }
   }
-  sort(ALL(a));
-  a.erase(unique(ALL(a)), a.end());
-  FOR(i, 1, MAX)
-  if (!sig[i]) sig[i] = sig[i - 1];
-
   int ans = 0;
-  for (auto x : a) {
-    for (int j = x + x - 1; j < MAX; j += x) {
-      if (sig[j] >= j + 1 - x) ans = max(ans, sig[j] - (j + 1 - x));
+  ROF(i, m, 0) {
+    vi cnt(m + 1, 0);
+    int curr = 0;
+    FOR(j, 0, n) { curr++, cnt[a[j][i] + 1]--; }
+    FOR(j, 1, m + 1) {
+      curr += cnt[j];
+      ans = max(ans, j * curr);
     }
   }
   cout << ans << ENDL;
