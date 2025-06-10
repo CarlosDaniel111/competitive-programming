@@ -4,6 +4,7 @@ using namespace std;
 using ll = long long;
 using pi = pair<int, int>;
 using vi = vector<int>;
+using iii = tuple<int, int, int>;
 
 #define pb push_back
 #define SZ(x) ((int)(x).size())
@@ -12,7 +13,6 @@ using vi = vector<int>;
 #define ROF(i, a, b) for (int i = (int)a - 1; i >= (int)b; --i)
 #define ENDL '\n'
 
-const int N = 3e5 + 10;
 int sz;
 struct Data {
   int mn;
@@ -129,34 +129,28 @@ struct Node {
   int l, r, h, s, e;
 };
 
-vector<vi> t;
 vector<Node> rect;
 
-void update(int k, int s, int e, int a, int b, int id) {
-  if (s > b || e < a) return;
-  if (s >= a && e <= b) {
-    t[k].pb(id);
-    return;
-  }
-  int mid = (s + e) >> 1;
-  update((k << 1) + 1, s, mid, a, b, id);
-  update((k << 1) + 2, mid + 1, e, a, b, id);
-}
-
-void dfs(int k, int l, int r) {
-  if (l > r) return;
+void solve(int L, int R, vector<iii> &ranges) {
   int prev = stp.root;
-  for (auto id : t[k]) stp.upd(rect[id].l, rect[id].r, rect[id].h);
-
-  if (l == r) {
-    if (query[l].first != -1)
-      cout << stp.query(query[l].first, query[l].second).mn << ENDL;
+  int mid = (L + R) >> 1;
+  vector<iii> left, right;
+  for (auto [l, r, id] : ranges) {
+    if (l <= L && R <= r)
+      stp.upd(rect[id].l, rect[id].r, rect[id].h);
+    else {
+      if (l <= mid) left.pb({l, r, id});
+      if (r > mid) right.pb({l, r, id});
+    }
+  }
+  if (L == R) {
+    if (query[L].first != -1)
+      cout << stp.query(query[L].first, query[L].second).mn << ENDL;
     stp.root = prev;
     return;
   }
-  int mid = (l + r) >> 1;
-  dfs((k << 1) + 1, l, mid);
-  dfs((k << 1) + 2, mid + 1, r);
+  solve(L, mid, left);
+  solve(mid + 1, R, right);
   stp.root = prev;
 }
 
@@ -167,7 +161,6 @@ signed main() {
   cin >> n;
   vi addId;
   query.assign(n + 5, {-1, -1});
-  t.resize(N << 2);
   vi nums;
   int cnt = 0;
   FOR(i, 0, n) {
@@ -217,8 +210,9 @@ signed main() {
   sz = SZ(nums) + 10;
   stp.init(sz);
   stp.build();
-  FOR(i, 0, SZ(rect)) { update(0, 0, n, rect[i].s, rect[i].e, i); }
-  dfs(0, 0, n);
+  vector<iii> ranges;
+  FOR(i, 0, SZ(rect)) { ranges.pb({rect[i].s, rect[i].e, i}); }
+  solve(0, n - 1, ranges);
 
   return 0;
 }
